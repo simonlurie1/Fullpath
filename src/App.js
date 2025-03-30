@@ -1,6 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Table } from 'antd';
 import SampleJson from './sample.json';
+import { columns } from './TableConfig';
+import { getLineChartConfig } from './LineChartConfig';
+import {
+    Chart as ChartJS,
+    LineElement,
+    PointElement,
+    LinearScale,
+    CategoryScale,
+    ArcElement,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+    LineElement,
+    PointElement,
+    LinearScale,
+    CategoryScale,
+    ArcElement,
+    Tooltip,
+    Legend,
+);
 
 
 const App = () => {
@@ -12,30 +35,11 @@ const App = () => {
     }
   }, []);
 
-
-  const columns = [
-    {
-      title: 'Date',
-      dataIndex: 'timestamp',
-      key: 'timestamp',
-      render: (text) => text ? new Date(text).toLocaleString() : 'N\A',
-    },
-    { title: 'Impressions', dataIndex: 'impressions', key: 'impressions',
-      render: (text) => text ? text.toLocaleString() : 'N\A' },
-    { title: 'Clicks', dataIndex: 'clicks', key: 'clicks',
-      render: (text) => text ? text.toLocaleString() : 'N\A' },
-    {
-      title: 'Cost',
-      dataIndex: 'cost',
-      key: 'cost',
-      render: (text) => (text ?? '0') + '$',
-    },
-    { title: 'Conversions', dataIndex: 'conversions', key: 'conversions',
-      render: (text) => text ? text.toLocaleString() : 'N\A' },
-  ];
-
   return (
       <div style={{ padding: 20 }}>
+        <Card title="Metrics Over Time"  style={{ maxWidth: 900 }}>
+              <Line data={getLineChartConfig(data)} />
+        </Card>
         <Card title="Detailed Metrics" style={{ marginTop: 20 }}>
           <Table
               dataSource={data}
